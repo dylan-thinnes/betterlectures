@@ -1,0 +1,23 @@
+{
+  "name": "betterlectures",
+  "version": "1.0.0",
+  "description": "Serves lectures for EoU students in a lightweight interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylan-thinnes/betterlectures.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylan-thinnes/betterlectures/issues"
+  },
+  "homepage": "https://github.com/dylan-thinnes/betterlectures#readme",
+  "dependencies": {
+    "aws-sdk": "^2.140.0",
+    "express": "^4.16.2"
+  }
+}
