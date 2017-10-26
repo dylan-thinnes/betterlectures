@@ -13,7 +13,7 @@ const buckets = new S3({
 	secretAccessKey: "X9J+r9hpHinzGzROuH1JYmNvQi42rPjf919DidFDuMI",
 	region: "US"
 });
-const apiData = {};
+var apiData = {};
 createApiData = function () {
 	new Promise((resolve, reject) => {
 		buckets.listObjects({
