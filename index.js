@@ -55,11 +55,9 @@ setInterval(createApiData, 600000);
 
 const app = express();
 app.all("/data", (req, res) => {
-	createApiData().then(() => {
-		res.status(200);
-		res.json(apiData);
-		res.end();
-	});
+	res.status(200);
+	res.json(apiData);
+	res.end();
 });
 app.use(express.static(__dirname + "/static"));
 if (process.argv.indexOf("-d") !== -1) app.listen(8080);
