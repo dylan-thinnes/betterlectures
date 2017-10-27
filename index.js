@@ -1,3 +1,4 @@
+const fs = require("fs");
 const S3 = require("aws-sdk").S3;
 const express = require("express");
 args = process.argv.slice(2);
@@ -18,8 +19,8 @@ const metadata = {
 }
 const buckets = new S3({
 	endpoint: "https://nyc3.digitaloceanspaces.com/",
-	accessKeyId: "MPTKL4HJFLNOUJYY2FAS",
-	secretAccessKey: "X9J+r9hpHinzGzROuH1JYmNvQi42rPjf919DidFDuMI",
+	accessKeyId: fs.readFileSync(__dirname + "/key.txt").toString().slice(0, -1),
+	secretAccessKey: fs.readFileSync(__dirname + "/secret.txt").toString().slice(0, -1),
 	region: "US"
 });
 var apiData = {};
