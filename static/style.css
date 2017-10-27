@@ -71,8 +71,11 @@ body {
 #info {
 	width: 500px;
 	text-align: left;
-	padding: 0 2ch 2ch 2ch;
+	padding: 0 2ch 0 2ch;
+	margin-bottom: 2ch;
 	box-sizing: border-box;
+	border-left: 1px solid #111;
+	border-right: 1px solid #111;
 }
 #infoTitle {
 	overflow: visible;
@@ -84,6 +87,7 @@ body {
 	text-decoration: underline;
 	cursor: pointer;
 	text-align: center;
+	display: block;
 }
 .download:hover { background-color: #ee9; }
 .download:active { background-color: #ee7; }

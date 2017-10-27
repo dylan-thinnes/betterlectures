@@ -103,13 +103,13 @@ var UI = function (data) {
 	this.infoNode = document.getElementById("info");
 	this.setInfo = function (lecture) {
 		if (lecture === undefined) {
-			this.infoNode.innerHTML = "<div id=\"infoTitle\" style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: <span style=\"color: #800 !important;\">(no lecture chosen)</span></div>Course: N/A<br/>Lecturer(s): N/A<br/>Date Recorded: N/A<br/>Video Sources: N/A<br/><div class=\"download\" style=\"color: #999 !important; background-color: transparent !important;\">Watch This Lecture in a New Tab</div>";
+			this.infoNode.innerHTML = "<div id=\"infoTitle\" style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: <span style=\"color: #800 !important;\">(no lecture chosen)</span></div>Course: N/A<br/>Lecturer(s): N/A<br/>Date Recorded: N/A<br/>Video Sources: N/A<br/><a class=\"download\" style=\"color: #999 !important; background-color: transparent !important; cursor: not-allowed;\">Watch This Lecture</a>";
 		} else {
 			this.infoNode.innerHTML = "<div id=\"infoTitle\" style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: " + lecture.name + "</div>Course: " + this.courses[lecture.course].name + "<br/>Lecturer(s): " + this.courses[lecture.course].lecturers + "<br/>Date Recorded: " + lecture.date + "<br/>Video Sources: " + lecture.indices + "<br/>";
-			var download = document.createElement("div");
-			download.innerHTML = "Watch This Lecture in a New Tab";
+			var download = document.createElement("a");
+			download.innerHTML = "Watch This Lecture";
+			download.href = "/display.html#" + JSON.stringify({"endpoint": lecture.course + "/" + lecture.date + lecture.trueName, "total": lecture.indices});
 			download.className = "download";
-			download.addEventListener("click", lecture.open.bind(lecture));
 			this.infoNode.appendChild(download);
 		}
 	}

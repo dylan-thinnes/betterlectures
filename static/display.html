@@ -14,6 +14,12 @@ body {
 	margin: 0;
 	align-items: flex-start;
 }
+body > *:first-child {
+	margin-top: 1ch;
+}
+body > *:not(#videos) {
+	margin-left: 1ch;
+}
 #videos {
 	height: 0;
 	flex: 1 1 auto;
