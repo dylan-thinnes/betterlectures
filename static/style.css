@@ -83,6 +83,7 @@ body {
 	font-weight: bold;
 	text-decoration: underline;
 	cursor: pointer;
+	text-align: center;
 }
 .download:hover { background-color: #ee9; }
 .download:active { background-color: #ee7; }
