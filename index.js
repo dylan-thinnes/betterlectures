@@ -2,10 +2,19 @@ const S3 = require("aws-sdk").S3;
 const express = require("express");
 args = process.argv.slice(2);
 
-const names = {
-	"ila": "Introduction to Linear Algebra (MATH08057)",
-	"cl": "Computation and Logic (INFR08012)",
-	"fp": "Functional Programming (INFR08013)"
+const metadata = {
+	"ila": {
+		name: "Introduction to Linear Algebra (MATH08057)",
+		lecturers: "Chris Sangwin, Pamela Docherty"
+	},
+	"cl": {
+		name: "Computation and Logic (INFR08012)",
+		lecturers: "Michael Fourman"
+	},
+	"fp": {
+		name: "Functional Programming (INFR08013)",
+		lecturers: "Don Sanella"
+	}
 }
 const buckets = new S3({
 	endpoint: "https://nyc3.digitaloceanspaces.com/",
@@ -28,10 +37,13 @@ createApiData = function () {
 			var pattern = RegExp(/^([^\/]+)\/([^\/]+)\/(.+)$/g);
 			var match = pattern.exec(data[ii].Key);
 			if (match === null) continue;
-			if (newApiData[match[1]] === undefined) newApiData[match[1]] = {name: names[match[1]], data: {}};
+			if (newApiData[match[1]] === undefined) {
+				newApiData[match[1]] = metadata[match[1]];
+				newApiData[match[1]].lectures = {};
+			}
 			var url = match[1] + "/" + match[2];
-			if (newApiData[match[1]].data[url] === undefined) newApiData[match[1]].data[url] = 1;
-			else newApiData[match[1]].data[url]++;
+			if (newApiData[match[1]].lectures[url] === undefined) newApiData[match[1]].lectures[url] = 1;
+			else newApiData[match[1]].lectures[url]++;
 		}
 		apiData = newApiData;
 	});
