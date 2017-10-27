@@ -2,106 +2,20 @@
 <html>
 	<head>
 		<title>BetterLectures</title>
-		<style>
-body {
-	max-width: 700px;
-	margin: 0 auto 0 auto;
-}
-#title {
-	margin: 4pt 0 4pt 0;
-	font-size: 18pt;
-}
-.paddedText {
-	margin: 4pt 0 4pt 0;
-}
-.listTitle {
-	margin: 4pt 0 4pt 0;
-	font-size: 14pt;
-	cursor: pointer;
-	display: block;
-}
-.listTitle:hover { background-color: #eee; }
-.listTitle:active { background-color: #ddd; }
-.list {
-	margin: 5pt 0 5pt 0;
-	height: 200px;
-	overflow-y: auto;
-	display: none;
-}
-.tip {
-	padding-left: 2ch;
-	font-size: 10pt;
-}
-.listEntry {
-	margin: 4pt 0 4pt 0;
-}
-		</style>
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-		<div id="title">Welcome to BetterLectures.</div>
-		<div class="paddedText">I was very annoyed by the extremely slow and large interface of Echo360, so I downloaded my lectures to see them offline more conveniently. Here I store them so they can be viewed faster and downloaded far more easily for future use of myself and others.</div>
-		<!--<a class="listTitle">Computation and Logic</a>
-		<div class="list" id="cl"></div>
-		<a class="listTitle">Introduction to Linear Algebra</a>
-		<div class="list" id="ila"></div>
-		<a class="listTitle">Functional Programming</a>
-		<div class="list" id="fp"></div>-->
-		<script>
-var List = function (id, name, entries) {
-	this.entries = [];
-	var title = document.createElement("a");
-	title.addEventListener("click", this.toggle.bind(this));
-	title.appendChild(document.createTextNode(name));
-	this.tip = document.createElement("span");
-	this.tip.className = "tip";
-	title.appendChild(this.tip);
-	title.className = "listTitle";
-	document.body.appendChild(title);
-	this.node = document.createElement("div");
-	this.node.className = "list";
-	this.node.id = id;
-	document.body.appendChild(this.node);
-	for (var ii = 0; ii < entries.length; ii++) this.addEntry(entries[ii]);
-	this.toggle();
-}
-List.prototype.toggle = function () {
-	console.log("toggling...");
-	if (this.showing === false) this.show();
-	else this.hide();
-}
-List.prototype.show = function () {
-	this.node.style.display = "block";
-	this.tip.innerHTML = "Hide Lectures From This Course -";
-	this.showing = true;
-}
-List.prototype.hide = function () {
-	this.node.style.display = "none";
-	this.tip.innerHTML = "Show Lectures From This Course +";
-	this.showing = false;
-}
-List.prototype.addEntry = function (entry) {
-	this.node.appendChild(this.entries[this.entries.push(new Entry(entry)) - 1].node);
-}
-
-var Entry = function (url) {
-	this.node = document.createElement("div");
-	this.url = url;
-	this.node.innerHTML = url;
-}
-
-var req = new XMLHttpRequest();
-req.open("GET", "/data");
-req.onreadystatechange = function () {
-	if (req.readyState === 4 && req.status === 200) {
-		var parsedJson = JSON.parse(req.response);
-		console.log(parsedJson);
-		for (var index in parsedJson) {
-			console.log(index, parsedJson[index]);
-			new List(index, parsedJson[index].name, parsedJson[index].data);
-		}
-	}
-}
-req.send();
-		</script>
+		<div class="limitWidth" id="title">Welcome to BetterLectures.</div>
+		<div class="paddedText limitWidth">I was very annoyed by the extremely slow and large interface of Echo360, so I downloaded my lectures to see them offline more conveniently. Here I store them so they can be viewed faster and downloaded far more easily for future use of myself and others.</div>
+		<div class="tables" id="tableTitles">
+			<div>Courses</div>
+			<div>Lectures</div>
+		</div>
+		<div class="tables" id="tableEntries">
+			<div id="courses"></div>
+			<div id="lectures"></div>
+		</div>
+		<div id="info"></div>
+		<script src="script.js" type="application/javascript"></script>
 	</body>
 </html>
