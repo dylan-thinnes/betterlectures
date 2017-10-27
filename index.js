@@ -27,7 +27,6 @@ createApiData = function () {
 		for (var ii = 0; ii < data.length; ii++) {
 			var pattern = RegExp(/^([^\/]+)\/([^\/]+)\/(.+)$/g);
 			var match = pattern.exec(data[ii].Key);
-			console.log(data[ii].Key, match);
 			if (match === null) continue;
 			if (newApiData[match[1]] === undefined) newApiData[match[1]] = {name: names[match[1]], data: {}};
 			var url = match[1] + "/" + match[2];

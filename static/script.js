@@ -45,7 +45,6 @@ Lecture.prototype.initializeNodes = function () {
 }
 Lecture.prototype.open = function (e) {
 	for (var ii = 0; ii < this.indices; ii++) {
-		console.log(e, this, "https://lectures.nyc3.digitaloceanspaces.com/" + this.course + "/" + this.date + this.trueName + "/" + ii);
 		window.open("https://lectures.nyc3.digitaloceanspaces.com/" + this.course + "/" + this.date + this.trueName + "/" + ii);
 	}
 }
@@ -89,21 +88,17 @@ var UI = function (data) {
 	this.infoNode = document.getElementById("info");
 	this.setInfo = function (lecture) {
 		this.infoNode.innerHTML = "<span style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: " + lecture.name + "</span><br/>Course: " + lecture.course.toUpperCase() + "<br/>Date Recorded: " + lecture.date + "<br/><div class=\"download\">Download This Lecture</div>";
-		console.log(lecture);
 		this.infoNode.children[4].addEventListener("click", lecture.open.bind(lecture));
 	}
 	this.deactivateLectures = function (lectures) {
-		console.log("deactivate", lectures);
 		for (var ii = 0; ii < lectures.length; ii++) this.activeLectures.removeKey(lectures[ii]);
 		this.renderLectures();
 	}
 	this.activateLectures = function (lectures) {
-		console.log(lectures);
 		for (var ii = 0; ii < lectures.length; ii++) this.activeLectures.addKey(lectures[ii]);
 		this.renderLectures();
 	}
 	this.renderLectures = function () {
-		console.log(this.activeLectures);
 		var domStrings = [];
 		for (var ii = 0; ii < this.activeLectures.value.length; ii++) {
 			domStrings.push(this.lectures[this.activeLectures.value[ii]].domString());
@@ -114,12 +109,10 @@ var UI = function (data) {
 		}
 	}
 	for (index in data) {
-		console.log(index);
 		this.courses[index] = new Course(index, data[index].name, Object.keys(data[index].data), this.activateLectures.bind(this), this.deactivateLectures.bind(this));
 		this.coursesNode.appendChild(this.courses[index].node);
 		for (var url in data[index].data) {
 			this.lectures[url] = new Lecture(url, this.setInfo.bind(this), data[index].data[url]);
-			//this.lectures[data[index].data[jj]] = new Lecture(data[index].data[jj]);
 		}
 	}
 }
@@ -130,7 +123,6 @@ req.open("GET", "/data");
 req.onreadystatechange = function () {
 	if (req.readyState === 4 && req.status === 200) {
 		var parsedJson = JSON.parse(req.response);
-		console.log(parsedJson);
 		window.ui = new UI(parsedJson);
 	}
 }
