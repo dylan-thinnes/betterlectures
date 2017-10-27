@@ -3,9 +3,9 @@ const express = require("express");
 args = process.argv.slice(2);
 
 const names = {
-	"ila": "Introduction to Linear Algebra",
-	"cl": "Computation and Logic",
-	"fp": "Functional Programming"
+	"ila": "Introduction to Linear Algebra (MATH08057)",
+	"cl": "Computation and Logic (INFR08012)",
+	"fp": "Functional Programming (INFR08013)"
 }
 const buckets = new S3({
 	endpoint: "https://nyc3.digitaloceanspaces.com/",
@@ -15,7 +15,7 @@ const buckets = new S3({
 });
 var apiData = {};
 createApiData = function () {
-	new Promise((resolve, reject) => {
+	var prom = new Promise((resolve, reject) => {
 		buckets.listObjects({
 			Bucket: "lectures"
 		}, (err, data) => {
@@ -24,30 +24,30 @@ createApiData = function () {
 		})
 	}).then(function (data) {
 		var newApiData = {};
-		regexStr = "^(";
-		for (var index in names) {
-			newApiData[index] = {name: names[index], data: []};
-			regexStr += index + "|";
-		}
-		regexStr = regexStr.slice(0,-1) + ")\/";
-		var matcher = new RegExp(regexStr);
 		for (var ii = 0; ii < data.length; ii++) {
-			var match = matcher.exec(data[ii].Key);
-			if (match === null || match[0].length === data[ii].Key.length) continue;
-			else match = match[1];
-			newApiData[match].data.push(data[ii].Key);
+			var pattern = RegExp(/^([^\/]+)\/([^\/]+)\/(.+)$/g);
+			var match = pattern.exec(data[ii].Key);
+			console.log(data[ii].Key, match);
+			if (match === null) continue;
+			if (newApiData[match[1]] === undefined) newApiData[match[1]] = {name: names[match[1]], data: {}};
+			var url = match[1] + "/" + match[2];
+			if (newApiData[match[1]].data[url] === undefined) newApiData[match[1]].data[url] = 1;
+			else newApiData[match[1]].data[url]++;
 		}
 		apiData = newApiData;
 	});
+	return prom;
 }
 createApiData();
 setInterval(createApiData, 600000);
 
 const app = express();
 app.all("/data", (req, res) => {
-	res.status(200);
-	res.json(apiData);
-	res.end();
+	createApiData().then(() => {
+		res.status(200);
+		res.json(apiData);
+		res.end();
+	});
 });
 app.use(express.static(__dirname + "/static"));
 if (process.argv.indexOf("-d") !== -1) app.listen(8080);
