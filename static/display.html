@@ -46,7 +46,7 @@ video {
 		<div id="syncStat"></div>
 		<div id="videos"></div>
 		<script>
-var data = JSON.parse(location.hash.slice(1));
+var data = JSON.parse(decodeURIComponent(location.hash.slice(1)));
 if (data.total === 1) {
 	document.body.children[0].remove();
 	document.body.children[0].remove();
