@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SlightlyBetterLecture</title>
+		<style>
+body {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+	align-items: flex-start;
+}
+#videos {
+	height: 0;
+	flex: 1 1 auto;
+}
+video {
+	flex: 0 0 auto;
+}
+#syncStat {
+	height: 1.5em;
+}
+.button {
+	padding: 3px;
+	border: #111 1px solid;
+	margin: 3px;
+	cursor: pointer;
+}
+.button:hover {background-color: #eee;}
+.button:active {background-color: #ddd;}
+		</style>
+	</head>
+	<body>
+		<a id="playAll" class="button">Play All Videos</a>
+		<div>Sync all videos to time of video #: <input type="text" value="1" id="syncVid"></input><a id="sync" class="button">Sync</a></div>
+		<div id="syncStat"></div>
+		<div id="videos"></div>
+		<script>
+var data = JSON.parse(location.hash.slice(1));
+if (data.total === 1) {
+	document.body.children[0].remove();
+	document.body.children[0].remove();
+	document.body.children[0].remove();
+} else {
+	var playAllNode = document.getElementById("playAll");
+	var playingAll = false;
+	var playAll = function () {
+		if (playingAll === false) {
+			playingAll = true;
+			playAllNode.innerHTML = "Pause All Videos";
+			for (var ii = 0; ii < vids.length; ii++) vids[ii].play();
+		} else {
+			playingAll = false;
+			playAllNode.innerHTML = "Play All Videos";
+			for (var ii = 0; ii < vids.length; ii++) vids[ii].pause();
+		}
+	}
+	playAllNode.addEventListener("click", playAll);
+
+	var syncNode = document.getElementById("sync");
+	var syncVidNode = document.getElementById("syncVid");
+	var syncStatNode = document.getElementById("syncStat");
+	var syncAll = function () {
+		index = parseInt(syncVidNode.value);
+		console.log(index);
+		if (index > vids.length) syncStatNode.innerHTML = "There is no video #" + index + ". There are only " + vids.length + " video(s).";
+		else {
+			playingAll = true;
+			playAll();
+			var syncTime = videosNode.children[index - 1].currentTime;
+			for (var ii = 0; ii < vids.length; ii++) {
+				vids[ii].currentTime = syncTime;
+			}
+			syncStatNode.innerHTML = "Set time of all videos to " + syncTime + " seconds.";
+		}
+	}
+	syncNode.addEventListener("click", syncAll);
+}
+
+document.title = data.endpoint.match(/\d{6}([^\/]+)$/) ? data.endpoint.match(/\d{6}([^\/]+)$/)[1] : "SlightlyBetterLecture";
+var videosNode = document.getElementById("videos");
+var endpoint = data.endpoint;
+var total = data.total;
+var vids = [];
+for (var ii = 0; ii < total; ii++) {
+	vid = document.createElement("video");
+	vids.push(vid);
+	vid.onerror = vids.splice.bind(vids, ii, 1);
+	vid.src = "https://lectures.nyc3.digitaloceanspaces.com/" + endpoint + "/" + ii;
+	if (ii !== 0) vid.volume = 0;
+	vid.controls = true;
+	vid.height = videosNode.getBoundingClientRect().height;
+	vid.width = document.body.getBoundingClientRect().width / total;
+	videosNode.appendChild(vid);
+}
+
+var recalculate = function () {
+	for (var ii = 0; ii < vids.length; ii++) {
+		rect = videosNode.getBoundingClientRect();
+		vids[ii].height = videosNode.getBoundingClientRect().height;
+		vids[ii].width = document.body.getBoundingClientRect().width / vids.length;
+	}
+}
+window.addEventListener("resize", recalculate);
+		</script>
+	</body>
+</html>
