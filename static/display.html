@@ -81,22 +81,22 @@ if (data.total === 1) {
 			for (var ii = 0; ii < vids.length; ii++) {
 				vids[ii].currentTime = syncTime;
 			}
-			syncStatNode.innerHTML = "Set time of all videos to " + syncTime + " seconds.";
+			syncStatNode.innerHTML = "Set time of all videos to " + syncTime + " seconds, please give your browser a few seconds to update.";
 		}
 	}
 	syncNode.addEventListener("click", syncAll);
 }
 
-document.title = data.endpoint.match(/\d{6}([^\/]+)$/) ? data.endpoint.match(/\d{6}([^\/]+)$/)[1] : "SlightlyBetterLecture";
+document.title = data.title;
 var videosNode = document.getElementById("videos");
-var endpoint = data.endpoint;
-var total = data.total;
+var endpoints = data.endpoints;
+var total = data.endpoints.length;
 var vids = [];
 for (var ii = 0; ii < total; ii++) {
 	vid = document.createElement("video");
 	vids.push(vid);
 	vid.onerror = vids.splice.bind(vids, ii, 1);
-	vid.src = "https://lectures.nyc3.digitaloceanspaces.com/" + endpoint + "/" + ii;
+	vid.src = "https://lectures.nyc3.digitaloceanspaces.com/" + endpoints[ii];
 	if (ii !== 0) vid.volume = 0;
 	vid.controls = true;
 	vid.height = videosNode.getBoundingClientRect().height;

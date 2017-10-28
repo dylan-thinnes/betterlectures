@@ -107,7 +107,7 @@ var UI = function (data) {
 			this.infoNode.innerHTML = "<div id=\"infoTitle\" style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: " + lecture.name + "</div>Course: " + lecture.courseName + "<br/>Lecturer(s): " + lecture.lecturers + "<br/>Date Recorded: " + lecture.date + "<br/>Video Sources: " + lecture.endpoints.length + "<br/>";
 			var download = document.createElement("a");
 			download.innerHTML = "Watch This Lecture";
-			download.href = "/display.html#" + JSON.stringify({"name": lecture.name, "endpoint": lecture.endpoints});
+			download.href = "/display.html#" + JSON.stringify({"name": lecture.name, "endpoints": lecture.endpoints});
 			download.className = "download";
 			this.infoNode.appendChild(download);
 		}
