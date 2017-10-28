@@ -18,6 +18,7 @@
   "homepage": "https://github.com/dylan-thinnes/betterlectures#readme",
   "dependencies": {
     "aws-sdk": "^2.140.0",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "sqlite3": "^3.1.13"
   }
 }
