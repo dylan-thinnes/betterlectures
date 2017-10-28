@@ -1,7 +1,7 @@
-var Course = function (id, name, lecturers, entries, showCallback, hideCallback) {
+var Course = function (id, name, lecturers, showCallback, hideCallback) {
 	this.showCallback = showCallback ? showCallback : () => {};
 	this.hideCallback = hideCallback ? hideCallback : () => {};
-	this.entries = entries;
+	this.lectureIds = [];
 	this.name = name;
 	this.lecturers = lecturers;
 	this.node = document.createElement("a");
@@ -13,6 +13,11 @@ var Course = function (id, name, lecturers, entries, showCallback, hideCallback)
 	this.node.className = "listItem";
 	this.toggle();
 }
+Course.prototype.addLectureId = function (lectureId) {
+	this.lectureIds.push(lectureId);
+	this.toggle();
+	this.toggle();
+}
 Course.prototype.toggle = function () {
 	if (this.showing === false) this.show();
 	else this.hide();
@@ -21,39 +26,33 @@ Course.prototype.show = function () {
 	this.node.style.backgroundColor = "#ee9";
 	this.checkbox.checked = true;
 	this.showing = true;
-	this.showCallback(this.entries);
+	this.showCallback(this.lectureIds);
 }
 Course.prototype.hide = function () {
 	this.node.style.backgroundColor = "";
 	this.checkbox.checked = false;
 	this.showing = false;
-	this.hideCallback(this.entries);
+	this.hideCallback(this.lectureIds);
 }
 
-var Lecture = function (url, setInfo, indices) {
-	this.setInfo = (function () { setInfo(this) }).bind(this);
-	this.tempId = Math.floor(Math.random() * Math.pow(2,32)).toString(16);
-	this.indices = indices;
-	var match = (/^([^\/]+)\/(\d{6})(.*)/g).exec(url);
-	this.course = match[1];
-	this.trueName = match[3] ? match[3] : "";
-	this.name = match[3] ? match[3] : "(unnamed)";
-	this.date = match[2];
-	this.url = "https://lectures.nyc3.digitaloceanspaces.com/" + url;
+var Lecture = function (id, data, setInfo) {
+	this.setInfo = setInfo;
+	this.id = id;
+	this.endpoints = JSON.parse(data.endpoints);
+	this.courseId = data.courseId;
+	this.courseName = data.courseName;
+	this.name = data.name ? data.name : "(unnamed)";
+	this.date = data.date;
+	this.lecturers = data.lecturers;
 }
-Lecture.prototype.addItem = function (index) {
-	this.indices++;
+Lecture.prototype.show = function () {
+	this.setInfo(this);
 }
 Lecture.prototype.domString = function () {
-	return "<div class=\"listItem\" id=\"" + this.tempId + "\">" + this.course.toUpperCase() + " - " + this.date + " - " + this.name + "</div>";
+	return "<div class=\"listItem\" id=\"" + this.id + "\">" + this.courseId.toUpperCase() + " - " + this.date + " - " + this.name + "</div>";
 }
 Lecture.prototype.initializeNodes = function () {
-	document.getElementById(this.tempId).addEventListener("click", this.setInfo);
-}
-Lecture.prototype.open = function (e) {
-	for (var ii = 0; ii < this.indices; ii++) {
-		window.open("/display.html#" + JSON.stringify({"endpoint": this.course + "/" + this.date + this.trueName, "total": this.indices}));
-	}
+	document.getElementById(this.id).addEventListener("click", this.show.bind(this));
 }
 Lecture.prototype.sortString = function (sortBy) {
 	//this.sortString = this.date + this.course + this.name;
@@ -105,10 +104,10 @@ var UI = function (data) {
 		if (lecture === undefined) {
 			this.infoNode.innerHTML = "<div id=\"infoTitle\" style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: <span style=\"color: #800 !important;\">(no lecture chosen)</span></div>Course: N/A<br/>Lecturer(s): N/A<br/>Date Recorded: N/A<br/>Video Sources: N/A<br/><a class=\"download\" style=\"color: #999 !important; background-color: transparent !important; cursor: not-allowed;\">Watch This Lecture</a>";
 		} else {
-			this.infoNode.innerHTML = "<div id=\"infoTitle\" style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: " + lecture.name + "</div>Course: " + this.courses[lecture.course].name + "<br/>Lecturer(s): " + this.courses[lecture.course].lecturers + "<br/>Date Recorded: " + lecture.date + "<br/>Video Sources: " + lecture.indices + "<br/>";
+			this.infoNode.innerHTML = "<div id=\"infoTitle\" style=\"font-size: 14pt; font-weight: bold;\">Lecture Title: " + lecture.name + "</div>Course: " + lecture.courseName + "<br/>Lecturer(s): " + lecture.lecturers + "<br/>Date Recorded: " + lecture.date + "<br/>Video Sources: " + lecture.endpoints.length + "<br/>";
 			var download = document.createElement("a");
 			download.innerHTML = "Watch This Lecture";
-			download.href = "/display.html#" + JSON.stringify({"endpoint": lecture.course + "/" + lecture.date + lecture.trueName, "total": lecture.indices});
+			download.href = "/display.html#" + JSON.stringify({"name": lecture.name, "endpoint": lecture.endpoints});
 			download.className = "download";
 			this.infoNode.appendChild(download);
 		}
@@ -140,12 +139,15 @@ var UI = function (data) {
 			this.activeLectures.values[ii].initializeNodes();
 		}
 	}
-	for (index in data) {
-		for (var url in data[index].lectures) {
-			this.lectures[url] = new Lecture(url, this.setInfo.bind(this), data[index].lectures[url]);
+	for (var ii = 0; ii < data.length; ii++) {
+		var lectureId = data[ii].id;
+		var courseId = data[ii].courseId;
+		this.lectures[lectureId] = new Lecture(lectureId, data[ii], this.setInfo.bind(this));
+		if (this.courses[courseId] === undefined) {
+			this.courses[courseId] = new Course(courseId, data[ii].courseName, data[ii].lecturers, this.activateLectures.bind(this), this.deactivateLectures.bind(this));
+			this.coursesNode.appendChild(this.courses[courseId].node);
 		}
-		this.courses[index] = new Course(index, data[index].name, data[index].lecturers, Object.keys(data[index].lectures), this.activateLectures.bind(this), this.deactivateLectures.bind(this));
-		this.coursesNode.appendChild(this.courses[index].node);
+		this.courses[courseId].addLectureId(lectureId);
 	}
 	this.setInfo();
 }
