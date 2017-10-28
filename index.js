@@ -6,7 +6,7 @@ const db = new sqlite3.Database(__dirname + "/app.db");
 const app = express();
 app.all("/data", (req, res) => {
 	res.status(200);
-	db.all("SELECT * FROM courses, lectures", (function (res, err, data) {
+	db.all("SELECT *, courses.name AS courseName FROM courses, lectures WHERE courses.id = lectures.courseId", (function (res, err, data) {
 		res.json(data);
 		res.end();
 	}).bind(this, res))
