@@ -91,3 +91,14 @@ body {
 }
 .download:hover { background-color: #ee9; }
 .download:active { background-color: #ee7; }
+
+#credit {
+	align-self: center;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 1ch;
+	font-size: 10pt;
+	border-top: 1px solid #111;
+}
