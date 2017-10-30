@@ -34,6 +34,7 @@ body {
 	flex: 1 1 auto;
 	padding: 0 2ch 2ch 2ch;
 	box-sizing: border-box;
+	height: 0px;
 }
 #tableTitles > div {
 	width: 0px;
