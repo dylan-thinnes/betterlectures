@@ -23,7 +23,7 @@ Course.prototype.toggle = function () {
 	else this.hide();
 }
 Course.prototype.show = function () {
-	this.node.style.backgroundColor = "#ee9";
+	this.node.style.backgroundColor = "#ee7";
 	this.checkbox.checked = true;
 	this.showing = true;
 	this.showCallback(this.lectureIds);
