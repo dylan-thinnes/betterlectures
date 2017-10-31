@@ -44,6 +44,8 @@ body {
 .tables > div {
 	width: 0px;
 	flex: 1 1 auto;
+}
+#tableEntries > div {
 	overflow-y: scroll;
 }
 #lectures {
