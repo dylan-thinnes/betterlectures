@@ -43,6 +43,7 @@ db.get("SELECT id FROM courses WHERE id=$id", {$id: courseId}, function (err, re
 		db.run("DELETE FROM lectures WHERE name=$name AND date=$date AND courseId=$courseId", {$name: data[index].$name, $date: data[index].$date, $courseId: data[index].$courseId});
 		db.run("INSERT INTO lectures (id, name, date, endpoints, courseId) VALUES ($id, $name, $date, $endpoints, $courseId)", data[index]);
 	}
+	uploadCommands.push("s3cmd --access_key=" + s3key + " --secret_key=" + s3sec + " s3://lectures/ --acl-public --recursive");
 	fs.writeFileSync("commands.sh", uploadCommands.join("\n"));
 });
 
