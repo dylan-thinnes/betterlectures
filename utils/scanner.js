@@ -41,6 +41,7 @@ db.get("SELECT id FROM courses WHERE id=$id", {$id: courseId}, function (err, re
 	for (var index in data) {
 		delete data[index].endpoints;
 		db.run("DELETE FROM lectures WHERE name=$name AND date=$date AND courseId=$courseId", {$name: data[index].$name, $date: data[index].$date, $courseId: data[index].$courseId});
+		console.log(index, data[index], data);
 		db.run("INSERT INTO lectures (id, name, date, endpoints, courseId) VALUES ($id, $name, $date, $endpoints, $courseId)", data[index]);
 	}
 	uploadCommands.push("s3cmd --access_key=" + s3key + " --secret_key=" + s3sec + " setacl s3://lectures/ --acl-public --recursive");
