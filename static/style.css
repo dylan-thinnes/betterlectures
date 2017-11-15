@@ -8,6 +8,7 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
+	font-family: monospace;
 }
 #title {
 	margin: 4pt 0 4pt 0;
@@ -38,27 +39,34 @@ body {
 	box-sizing: border-box;
 	height: 0px;
 }
-#tableTitles > div {
+#tableTitles > 1iv {
 	width: 0px;
 }
-.tables > div {
+.tables > * {
 	width: 0px;
 	flex: 1 1 auto;
+	display: block;
 }
-#tableEntries > div {
+#tableEntries > * {
 	overflow-y: scroll;
 }
 #lectures {
 	margin-left: 2ch;
 	border-left: 1px solid #111;
 	padding-left: 2ch;
+	table-layout: fixed;
+	border-collapse: collapse;
 }
 .listItem {
 	margin: 4pt 0 4pt 0;
 	font-size: 12pt;
 	cursor: pointer;
 	display: block;
+	padding: 0;
 }
+.listItem > td { padding: 0; }
+.listItem > td:nth-child(1) { width: 6ch; }
+.listItem > td:nth-child(2) { width: 8ch; }
 .listItem:hover { background-color: #ee9; }
 .listItem:active { background-color: #ee7 !important; }
 .list {

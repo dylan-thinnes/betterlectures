@@ -49,7 +49,7 @@ Lecture.prototype.show = function () {
 	this.setInfo(this);
 }
 Lecture.prototype.domString = function () {
-	return "<div class=\"listItem\" id=\"" + this.id + "\">" + this.courseId.toUpperCase() + " - " + this.date + " - " + this.name + "</div>";
+	return "<tr class=\"listItem\" id=\"" + this.id + "\"><td>" + this.courseId.toUpperCase() + "</td><td>" + this.date + "</td><td>" + this.name + "</td></tr>";
 }
 Lecture.prototype.initializeNodes = function () {
 	document.getElementById(this.id).addEventListener("click", this.show.bind(this));
