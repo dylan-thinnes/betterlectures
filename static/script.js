@@ -152,9 +152,9 @@ var Table = function (data) {
 	this.setInfo();
 }
 
-
-document.getElementById("submitPassword").addEventListener("click", function (e) {
+var checkPassword = function (e) {
 	var pass = document.getElementById("password").value;
+	localStorage.setItem("password", pass);
 	var passwordStatus = document.getElementById("passwordStatus");
 	passwordStatus.innerHTML = "Checking password...";
 	passwordStatus.style.color = "blue";
@@ -173,4 +173,10 @@ document.getElementById("submitPassword").addEventListener("click", function (e)
 		}
 	}
 	req.send();
-});
+}
+document.getElementById("submitPassword").addEventListener("click", checkPassword);
+var password = localStorage.getItem("password");
+if (password !== null && password !== "") {
+	document.getElementById("password").value = password;
+	checkPassword();
+}
