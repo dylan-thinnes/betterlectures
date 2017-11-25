@@ -12,25 +12,34 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 	<body>
-		<div class="limitWidth" id="title">Welcome to SlightlyBetterLectures.</div>
-		<div class="paddedText limitWidth">I was very annoyed by the extremely slow and large interface of Echo360, so I downloaded my lectures to see them offline more conveniently. Here I store them for future use of myself and others. <b>NOTE: If you want to download lots of lectures, contact me, I can get them to you faster than the net can.</b></div>
-		<div id="info">
-			<div id="infoTitle" style="font-size: 14pt; font-weight: bold;">Lecture Title: <span style="color: #800 !important;">(no lecture chosen)</span></div>
-			Course: N/A<br>
-			Lecturer(s): N/A<br>
-			Date Recorded: N/A<br>
-			Video Sources: N/A<br>
-			<a class="download" style="color: #999 !important; background-color: transparent !important; cursor: not-allowed;">Watch This Lecture</a>
+		<div class="page">
+			<div class="limitWidth title">Welcome to SlightlyBetterLectures.</div>
+			<div id="info">
+				<div id="infoTitle" style="font-size: 14pt; font-weight: bold;">Lecture Title: <span style="color: #800 !important;">(no lecture chosen)</span></div>
+				Course: N/A<br>
+				Lecturer(s): N/A<br>
+				Date Recorded: N/A<br>
+				Video Sources: N/A<br>
+				<a class="download" style="color: #999 !important; background-color: transparent !important; cursor: not-allowed;">Watch This Lecture</a>
+			</div>
+			<div class="tables" id="tableTitles">
+				<div>Courses</div>
+				<div>Lectures (Click on a course to see)</div>
+			</div>
+			<div class="tables" id="tableEntries">
+				<div id="courses"></div>
+				<table id="lectures"></table>
+			</div>
+			<div id="credit" class="limitWidth"><span>Made by <a href="https://www.github.com/dylan-thinnes">Dylan Thinnes</a></span><span>Got a bug or a request? Let me know on <a href="https://www.github.com/dylan-thinnes/slightlybetterlectures/issues">the GitHub repo.</a></span></div>
 		</div>
-		<div class="tables" id="tableTitles">
-			<div>Courses</div>
-			<div>Lectures (Click on a course to see)</div>
+		<div class="page" id="passwordPage">
+			<div class="limitWidth title">Welcome to SlightlyBetterLectures.</div>
+			<div class="paddedText limitWidth">I was very annoyed by the extremely slow and large interface of Echo360, so I downloaded my lectures to see them offline more conveniently. Here I store them for future use of myself and others. <b>NOTE: If you want to download lots of lectures, contact me, I can get them to you faster than the net can.</b></div>
+			<div class="paddedText limitWidth"><b>THIS WEBSITE REQUIRES A PASSWORD:</b></div>
+			<input type="text" placeholder="Password here." id="password"></input>
+			<a id="submitPassword" href="#">Submit Password</a>
+			<div class="limitWidth paddedText" id="passwordStatus"></div>
 		</div>
-		<div class="tables" id="tableEntries">
-			<div id="courses"></div>
-			<table id="lectures"></table>
-		</div>
-		<div id="credit" class="limitWidth"><span>Made by <a href="https://www.github.com/dylan-thinnes">Dylan Thinnes</a></span><span>Got a bug or a request? Let me know on <a href="https://www.github.com/dylan-thinnes/slightlybetterlectures/issues">the GitHub repo.</a></span></div>
 		<script src="script.js" type="application/javascript"></script>
 	</body>
 </html>

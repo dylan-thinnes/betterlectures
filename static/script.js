@@ -93,7 +93,7 @@ OrderedList.prototype.findOrderedIndex = function (key) {
 }
 
 
-var UI = function (data) {
+var Table = function (data) {
 	this.lectures = {};
 	this.courses = {};
 	this.activeLectures = new OrderedList();
@@ -153,12 +153,24 @@ var UI = function (data) {
 }
 
 
-var req = new XMLHttpRequest();
-req.open("GET", "/data?ts=" + Date.now().toString(36));
-req.onreadystatechange = function () {
-	if (req.readyState === 4 && req.status === 200) {
-		var parsedJson = JSON.parse(req.response);
-		window.ui = new UI(parsedJson);
+document.getElementById("submitPassword").addEventListener("click", function (e) {
+	var pass = document.getElementById("password").value;
+	var passwordStatus = document.getElementById("passwordStatus");
+	passwordStatus.innerHTML = "Checking password...";
+	passwordStatus.style.color = "blue";
+	var req = new XMLHttpRequest();
+	req.open("GET", "/data?ts=" + Date.now().toString(36) + "&password=" + pass);
+	req.onreadystatechange = function () {
+		if (req.readyState === 4) {
+			if (req.status === 200) {
+				var parsedJson = JSON.parse(req.response);
+				document.getElementById("passwordPage").style.display = "none";
+				window.ui = new Table(parsedJson);
+			} else {
+				passwordStatus.innerHTML = "Password failed.";
+				passwordStatus.style.color = "red";
+			}
+		}
 	}
-}
-req.send();
+	req.send();
+});
