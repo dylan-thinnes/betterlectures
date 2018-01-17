@@ -5,7 +5,7 @@ args = process.argv.slice(2);
 const db = new sqlite3.Database(__dirname + "/app.db");
 const app = express();
 app.all("/data", (req, res) => {
-	if (req.query.password.toLowerCase() !== "appleton") {
+	if (req.query.password == undefined || req.query.password.toLowerCase() !== "appleton") {
 		res.status(404).end();
 	} else {
 		res.status(200);
