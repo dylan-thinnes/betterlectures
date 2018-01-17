@@ -178,5 +178,4 @@ document.getElementById("submitPassword").addEventListener("click", checkPasswor
 var password = localStorage.getItem("password");
 if (password !== null && password !== "") {
 	document.getElementById("password").value = password;
-	checkPassword();
 }
