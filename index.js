@@ -4,7 +4,7 @@ args = process.argv.slice(2);
 
 const db = new sqlite3.Database(__dirname + "/app.db");
 const app = express();
-app.all("/data", (req, res) => {
+/*app.all("/data", (req, res) => {
 	if (req.query.password.toLowerCase() !== "appleton") {
 		res.status(404).end();
 	} else {
@@ -14,7 +14,7 @@ app.all("/data", (req, res) => {
 			res.end();
 		}).bind(this, res))
 	}
-});
+});*/
 app.use(express.static(__dirname + "/static"));
 
 if (process.argv.indexOf("-d") !== -1) app.listen(8080);

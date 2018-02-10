@@ -1,3 +1,5 @@
+#DEPRECATED DUE TO PERSONAL AND LEGAL CONCERNS
+
 ## slightlybetterlectures
 Serves lectures for University of Edinburgh students in a lightweight interface.
 
